@@ -34,7 +34,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <img src="/home.png" alt="Home" className="h-9 w-9" />
+            <img src="/home.png" alt="Home" className="h-15 w-15" />
             <span className="font-bold text-lg dark:text-white">
               MealDoctor
             </span>
