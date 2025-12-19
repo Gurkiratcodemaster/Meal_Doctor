@@ -68,8 +68,8 @@ export default function QuizPage() {
     ((currentQuestion + 1) / questions.length) * 100;
 
   const handleAnswer = (value: string) => {
-    setAnswers((prev) => ({
-      ...prev,
+    setAnswers((answers) => ({
+      ...answers,
       [currentQuestion]: value,
     }));
   };
@@ -92,7 +92,6 @@ export default function QuizPage() {
 
         {!completed ? (
           <>
-            {/* Progress Bar */}
             <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
               <div
                 className="bg-green-500 h-2 rounded-full transition-all duration-300"
@@ -104,12 +103,10 @@ export default function QuizPage() {
               Question {currentQuestion + 1} of {questions.length}
             </p>
 
-            {/* Question */}
             <h2 className="text-lg font-semibold mb-4 text-center">
               {questions[currentQuestion].question}
             </h2>
 
-            {/* Options */}
             <select
               className="w-full border rounded p-3 mb-6"
               value={answers[currentQuestion] ?? ""}
@@ -123,7 +120,6 @@ export default function QuizPage() {
               ))}
             </select>
 
-            {/* Navigation Buttons */}
             <div className="flex justify-between">
               <Button
                 className="bg-gray-200 text-gray-700 px-6 py-2 rounded"
@@ -145,7 +141,6 @@ export default function QuizPage() {
             </div>
           </>
         ) : (
-          /* Final Screen */
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-4">
               🎉 Quiz Completed!

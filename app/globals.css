@@ -120,3 +120,28 @@
     @apply bg-background text-foreground;
   }
 }
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes floatX {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-14px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-float-x {
+  animation: floatX 4s ease-in-out infinite;
+  will-change: transform;
+}
