@@ -18,9 +18,3 @@ export const authOptions: NextAuthOptions = {
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
-
-
-
-// 522270356007-u1ie2a61u9d55tnhjqrmf54em82rv12h.apps.googleusercontent.com
-
-// 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
