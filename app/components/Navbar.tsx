@@ -1,99 +1,113 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import {
+  Search,
+  Compass,
+  MessageCircle,
+  User,
+  Bell
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import Button from "./Button";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <motion.nav
-      initial={{ y: -40, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className={`
-        sticky top-0 z-50
-        ${scrolled
-          ? "bg-black/40 backdrop-blur-xl border-b border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.4)]"
-          : "bg-transparent"}
-      `}
-    >
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <div>
+      <div className="block h-screen px-4 w-1/5 bg-gray-200">
 
         {/* LOGO */}
-        <Link href="/" className="flex items-center gap-2">
-          <img src="/home.png" className="w-9 h-9" />
-          <span className="font-bold text-white text-lg tracking-wide">
-            Meal<span className="text-green-400">Doctor</span>
+        <Link href="/" className="flex items-center text-black pb-2 mb-2">
+          <img src="/home.png" className="w-15" />
+          <span className="font-bold text-xl">
+            Meal<span className="text-green-500">Doctor</span>
           </span>
         </Link>
 
-        {/* LINKS */}
-        <div className="hidden md:flex gap-8 font-color-black">
-          <NavLink href="/about" active={pathname === "/about"}>About</NavLink>
-          <NavLink href="/features" active={pathname === "/features"}>Features</NavLink>
+        {/* DESKTOP LINKS */}
+        <div className="hidden md:flex flex-col gap-4">
+          <NavLink href="/Search" active={pathname === "/Search"}>
+            <Compass className="inline mr-2"/> Explore
+          </NavLink><NavLink href="/Search" active={pathname === "/Search"}>
+           <MessageCircle className="inline mr-2"/> Messages
+          </NavLink>
+          <NavLink href="/Search" active={pathname === "/Search"}>
+             <Bell className="inline mr-2"/>Notifications
+          </NavLink>
+          <NavLink href="/Search" active={pathname === "/Search"}>
+            <User className="inline mr-2"/> Profile
+          </NavLink>
+
+
         </div>
 
-        {/* ACTION */}
-        <div className="hidden md:flex">
+        {/* DESKTOP LOGIN */}
+        {/* <div className="hidden md:block">
           <Link href="/login">
-            <Button
-              className="
-                bg-green-500 text-black font-semibold
-                px-6 py-2 rounded-xl
-                shadow-[0_0_20px_rgba(34,197,94,0.6)]
-                hover:shadow-[0_0_35px_rgba(34,197,94,0.9)]
-                transition
-              "
-            >
+            <Button className="bg-green-500 px-6 py-2 rounded-xl hover:scale-105">
               Login
             </Button>
           </Link>
-        </div>
+        </div> */}
 
-        {/* MOBILE */}
-        <button onClick={() => setOpen(!open)} className="md:hidden text-white text-2xl">
+        {/* MOBILE MENU BUTTON */}
+        <Button
+          className="md:hidden"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
           ☰
-        </button>
+        </Button>
       </div>
 
       {/* MOBILE MENU */}
-      {open && (
-        <div className="md:hidden px-6 pb-4 pt-2 bg-black/70 backdrop-blur-xl">
-          <NavLink mobile href="/about">About</NavLink>
-          <NavLink mobile href="/features">Features</NavLink>
+      {menuOpen && (
+        <div className="md:hidden bg-white px-6 pb-4">
+          <NavLink mobile={true} href="/about" active={pathname === "/about"}>
+            About
+          </NavLink>
+          <NavLink mobile={true} href="/features" active={pathname === "/features"}>
+            Features
+          </NavLink>
+
           <Link href="/login">
-            <Button className="mt-4 w-full bg-green-500 text-black py-2 rounded-xl">
+            <Button className="w-full mt-4 bg-green-500 py-2 rounded-xl">
               Login
             </Button>
           </Link>
         </div>
       )}
-    </motion.nav>
-  );
+      </div>
+      );
 }
-
-function NavLink({ href, children, active, mobile }: any) {
+function NavLink({
+  href,
+  children,
+  active = false,
+  mobile = false,
+}: {
+  href: string;
+  children: React.ReactNode;
+  active?: boolean;
+  mobile?: boolean;
+}) {
   return (
     <Link
       href={href}
       className={`
         ${mobile ? "block py-3" : ""}
-        text-white font-medium relative
-        after:absolute after:left-0 after:-bottom-1 after:h-[2px]
-        after:bg-green-400 after:transition-all
-        ${active ? "after:w-full" : "after:w-0 hover:after:w-full"}
+        text-black font-medium
+        border-b-2
+        pb-3
+        transition-all duration-300
+        ${active
+          ? "border-green-500"
+          : "border-transparent hover:border-green-500"
+        }
       `}
     >
       {children}

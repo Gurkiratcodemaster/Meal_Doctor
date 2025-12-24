@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[50vh] flex items-center ">
+    <section className="relative min-h-[50vh] w-4/5 flex items-center">
 
       {/* BACKGROUND IMAGE */}
       <Image
@@ -21,7 +21,7 @@ export default function Hero() {
       {/* BACKGROUND GRADIENT */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-900/30 via-green-800/20 to-black" />
 
-      <div className="relative z-10 px-6 grid lg:grid-cols-2 gap-16">
+      <div className="relative z-10 px-6 grid lg:grid-cols-2 gap-16 lg:px-32">
         {/* IMAGE */}
         <motion.div
           initial={{ opacity: 0, x: -80 }}
