@@ -46,7 +46,7 @@ export default function SignupPage() {
 
       const user = userCredential.user;
       const username = `${firstName}${lastName}`.toLowerCase() + user.uid.slice(0, 5);
-      setDoc(doc(db, "users", user.uid), {
+      await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         firstName,
         lastName,
@@ -85,7 +85,7 @@ export default function SignupPage() {
         displayName.replace(/\s+/g, "").toLowerCase() + user.uid.slice(0, 5);
 
       // save user profile (non-blocking)
-      setDoc(doc(db, "users", user.uid), {
+      await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         firstName: first,
         lastName: last,

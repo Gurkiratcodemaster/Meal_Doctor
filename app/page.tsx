@@ -12,25 +12,21 @@ import { auth } from "./lib/firebase";
 
 
 export default function Home() {
-  const router = useRouter();
-  const [checking, setChecking] = useState(true);
+const router = useRouter();
+const [checking, setChecking] = useState(true);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        router.push("/login");
-      } else {
-        setChecking(false);
-      }
-    });
+useEffect(() => {
+  return onAuthStateChanged(auth, (user) => {
+    if (!user) router.push("/login");
+    else setChecking(false);
+  });
+}, []);
 
-    return () => unsubscribe();
-  }, [router]);
+if (checking) return <p>Loading...</p>;
 
-  if (checking) return <p>Loading...</p>;
+
   return (
     <>
-      {/* Navbar Fade Down */}
       <motion.div
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
@@ -40,7 +36,6 @@ export default function Home() {
       </motion.div>
 
       <main>
-        {/* Hero Section */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -49,7 +44,6 @@ export default function Home() {
           <HeroSection />
         </motion.div>
 
-        {/* Professionals (Slide Up on Scroll) */}
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -1,91 +1,80 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { auth } from "../lib/firebase";
+import { signOut } from "firebase/auth";
+
 import {
   Search,
   Compass,
   MessageCircle,
   User,
-  Bell
+  Bell,
+  MoreHorizontal
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
-import Button from "./Button";
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname();
+  const [showMore, setShowMore] = useState(false);
+  const router = useRouter();
+  const handleSignOut = async () => {
 
+    await signOut(auth);
+    router.push("/login");
+  };
   return (
     <div>
       <div className="flex flex-col h-screen px-2 w-[10%] md:w-1/5 min-w-[65px] border-r-2 border-black space-y-8">
-        
+
         <Link href="/" className="flex items-center text-black">
           <img src="/home.png" className="w-[40px]" />
-          <span className="hidden lg:inline font-bold text-xl">
+          <span className="hidden md:inline font-bold text-xl">
             Meal<span className="text-green-500">Doctor</span>
           </span>
         </Link>
-          <NavLink href="/Explore" active={pathname === "/Explore"}>
-            <Compass className="inline"/> <span className="hidden  md:inline ml-1">Explore</span>
-          </NavLink><NavLink href="/Messages" active={pathname === "/Messages"}>
-           <MessageCircle className="inline"/><span className="hidden md:inline ml-1">Messages</span>
-          </NavLink>
-          <NavLink href="/Notifications" active={pathname === "/Notifications"}>
-             <Bell className="inline"/><span className="hidden md:inline ml-1">Notifications</span>
-          </NavLink>
-          <NavLink href="/Profile" active={pathname === "/Profile"}>
-            <User className="inline"/> <span className="hidden md:inline ml-1">Profile</span>
-          </NavLink>
+        <NavLink href="/Explore" >
+          <Compass className="inline" /> <span className="hidden  md:inline ml-1">Explore</span>
+        </NavLink><NavLink href="/Messages" >
+          <MessageCircle className="inline" /><span className="hidden md:inline ml-1">Messages</span>
+        </NavLink>
+        <NavLink href="/Notifications" >
+          <Bell className="inline" /><span className="hidden md:inline ml-1">Notifications</span>
+        </NavLink>
+        <NavLink href="/Profile" >
+          <User className="inline" /> <span className="hidden md:inline ml-1">Profile</span>
+        </NavLink>
+        <div className="relative">
+          <button
+            onClick={() => setShowMore(!showMore)}
+            className="w-full text-left transition-all duration-300 px-2 p-2 hover:bg-gray-200 hover:rounded-lg"
+          >
+            <MoreHorizontal className="inline" />
+            <span className="hidden md:inline ml-2">More</span>
+          </button>
 
-        {/* DESKTOP LOGIN */}
-        {/* <div className="hidden md:block">
-          <Link href="/login">
-            <Button className="bg-green-500 px-6 py-2 rounded-xl hover:scale-105">
-              Login
-            </Button>
-          </Link>
-        </div> */}
-
-        {/* MOBILE MENU BUTTON */}
-        {/* <Button
-          className="md:hidden"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          ☰
-        </Button> */}
-      </div>
-
-      {/* MOBILE MENU */}
-      {/* {menuOpen && (
-        <div className="md:hidden bg-white px-6 pb-4">
-          <NavLink mobile={true} href="/about" active={pathname === "/about"}>
-            About
-          </NavLink>
-          <NavLink mobile={true} href="/features" active={pathname === "/features"}>
-            Features
-          </NavLink>
-
-          <Link href="/login">
-            <Button className="w-full mt-4 bg-green-500 py-2 rounded-xl">
-              Login
-            </Button>
-          </Link>
+          {showMore && (
+            <div className="absolute left-full ml-3 bottom-0 bg-white border-2 rounded-lg shadow-md w-30">
+              <button
+                onClick={handleSignOut}
+                className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
-      )} */}
       </div>
-      );
+    </div>
+  );
 }
 function NavLink({
   href,
   children,
-  active = false,
   mobile = false,
 }: {
   href: string;
   children: React.ReactNode;
-  active?: boolean;
   mobile?: boolean;
 }) {
   return (
@@ -93,8 +82,8 @@ function NavLink({
       href={href}
       className={`
         ${mobile ? "block py-3" : ""}
-        transition-all duration-300 px-2
-        hover:bg-gray-200 hover:rounded-lg hover:p-1
+        transition-all duration-300 px-2 p-2
+        hover:bg-gray-200 hover:rounded-lg
       `}
     >
       {children}
