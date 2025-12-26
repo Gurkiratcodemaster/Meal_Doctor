@@ -7,41 +7,67 @@ import Button from "../../components/Button";
 import { useRouter } from "next/navigation";
 
 export default function UserDashboard() {
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState({
     name: "",
     goal: "",
     diet: "",
   });
 
-  const router = useRouter();
-
   useEffect(() => {
     const fetchProfile = async () => {
       const user = auth.currentUser;
-      if (!user) return router.push("/login");
+      if (!user) {
+        router.push("/login");
+        return;
+      }
 
-      const ref = doc(db, "users", user.uid);
-      const snap = await getDoc(ref);
+      try {
+        const ref = doc(db, "users", user.uid);
+        const snap = await getDoc(ref);
 
-      if (snap.exists()) {
-        setProfile(snap.data());
+        if (snap.exists()) {
+          const data = snap.data();
+          setProfile({
+            name: `${data.firstName || ""} ${data.lastName || ""}`.trim(),
+            goal: data.goal || "",
+            diet: data.diet || "",
+          });
+        }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProfile();
-  }, []);
+  }, [router]);
 
   const updateProfile = async () => {
     const user = auth.currentUser;
+    if (!user) return;
 
     await setDoc(
       doc(db, "users", user.uid),
-      { ...profile, updatedAt: new Date() },
+      {
+        goal: profile.goal,
+        diet: profile.diet,
+        updatedAt: new Date(),
+      },
       { merge: true }
     );
 
     alert("Profile updated");
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        Loading dashboard...
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-900/20 via-black to-black p-6 text-white">
@@ -53,13 +79,15 @@ export default function UserDashboard() {
           className="input"
           placeholder="Your Name"
           value={profile.name}
-          onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+          disabled
         />
 
         <select
           className="input bg-black/40"
           value={profile.goal}
-          onChange={(e) => setProfile({ ...profile, goal: e.target.value })}
+          onChange={(e) =>
+            setProfile({ ...profile, goal: e.target.value })
+          }
         >
           <option value="">Select Goal</option>
           <option value="weight_loss">Weight Loss</option>
@@ -70,7 +98,9 @@ export default function UserDashboard() {
         <select
           className="input bg-black/40"
           value={profile.diet}
-          onChange={(e) => setProfile({ ...profile, diet: e.target.value })}
+          onChange={(e) =>
+            setProfile({ ...profile, diet: e.target.value })
+          }
         >
           <option value="">Diet Preference</option>
           <option value="veg">Vegetarian</option>
@@ -78,7 +108,7 @@ export default function UserDashboard() {
           <option value="vegan">Vegan</option>
         </select>
 
-        <Button onClick={updateProfile} className="w-full bg-green-500 text-black">
+        <Button className="w-full bg-green-500 text-black" onClick={updateProfile}>
           Update Profile
         </Button>
       </div>

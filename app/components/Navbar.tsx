@@ -19,32 +19,25 @@ export default function Navbar() {
 
   return (
     <div>
-      <div className="block h-screen px-4 w-1/5 bg-gray-200">
-
-        {/* LOGO */}
-        <Link href="/" className="flex items-center text-black pb-2 mb-2">
-          <img src="/home.png" className="w-15" />
-          <span className="font-bold text-xl">
+      <div className="flex flex-col h-screen px-2 w-[10%] md:w-1/5 min-w-[65px] border-r-2 border-black space-y-8">
+        
+        <Link href="/" className="flex items-center text-black">
+          <img src="/home.png" className="w-[40px]" />
+          <span className="hidden lg:inline font-bold text-xl">
             Meal<span className="text-green-500">Doctor</span>
           </span>
         </Link>
-
-        {/* DESKTOP LINKS */}
-        <div className="hidden md:flex flex-col gap-4">
-          <NavLink href="/Search" active={pathname === "/Search"}>
-            <Compass className="inline mr-2"/> Explore
-          </NavLink><NavLink href="/Search" active={pathname === "/Search"}>
-           <MessageCircle className="inline mr-2"/> Messages
+          <NavLink href="/Explore" active={pathname === "/Explore"}>
+            <Compass className="inline"/> <span className="hidden  md:inline ml-1">Explore</span>
+          </NavLink><NavLink href="/Messages" active={pathname === "/Messages"}>
+           <MessageCircle className="inline"/><span className="hidden md:inline ml-1">Messages</span>
           </NavLink>
-          <NavLink href="/Search" active={pathname === "/Search"}>
-             <Bell className="inline mr-2"/>Notifications
+          <NavLink href="/Notifications" active={pathname === "/Notifications"}>
+             <Bell className="inline"/><span className="hidden md:inline ml-1">Notifications</span>
           </NavLink>
-          <NavLink href="/Search" active={pathname === "/Search"}>
-            <User className="inline mr-2"/> Profile
+          <NavLink href="/Profile" active={pathname === "/Profile"}>
+            <User className="inline"/> <span className="hidden md:inline ml-1">Profile</span>
           </NavLink>
-
-
-        </div>
 
         {/* DESKTOP LOGIN */}
         {/* <div className="hidden md:block">
@@ -56,16 +49,16 @@ export default function Navbar() {
         </div> */}
 
         {/* MOBILE MENU BUTTON */}
-        <Button
+        {/* <Button
           className="md:hidden"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           ☰
-        </Button>
+        </Button> */}
       </div>
 
       {/* MOBILE MENU */}
-      {menuOpen && (
+      {/* {menuOpen && (
         <div className="md:hidden bg-white px-6 pb-4">
           <NavLink mobile={true} href="/about" active={pathname === "/about"}>
             About
@@ -80,7 +73,7 @@ export default function Navbar() {
             </Button>
           </Link>
         </div>
-      )}
+      )} */}
       </div>
       );
 }
@@ -100,14 +93,8 @@ function NavLink({
       href={href}
       className={`
         ${mobile ? "block py-3" : ""}
-        text-black font-medium
-        border-b-2
-        pb-3
-        transition-all duration-300
-        ${active
-          ? "border-green-500"
-          : "border-transparent hover:border-green-500"
-        }
+        transition-all duration-300 px-2
+        hover:bg-gray-200 hover:rounded-lg hover:p-1
       `}
     >
       {children}
