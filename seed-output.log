@@ -1,0 +1,21 @@
+🌱 Seeding database...
+❌ Seeding failed: DriverAdapterError: SQLITE_ERROR: no such table: main.User
+    at PrismaLibSqlAdapter.onError (/home/unknown-master/meal/node_modules/@prisma/adapter-libsql/dist/index-node.js:329:11)
+    at PrismaLibSqlAdapter.performIO (/home/unknown-master/meal/node_modules/@prisma/adapter-libsql/dist/index-node.js:322:12)
+    at async PrismaLibSqlAdapter.queryRaw (/home/unknown-master/meal/node_modules/@prisma/adapter-libsql/dist/index-node.js:290:65)
+    at async /home/unknown-master/meal/node_modules/.prisma/client/runtime/client.js:15:24163
+    at async fr (/home/unknown-master/meal/node_modules/.prisma/client/runtime/client.js:15:24002)
+    at async e.interpretNode (/home/unknown-master/meal/node_modules/.prisma/client/runtime/client.js:15:42384)
+    at async e.interpretNode (/home/unknown-master/meal/node_modules/.prisma/client/runtime/client.js:15:42808)
+    at async e.interpretNode (/home/unknown-master/meal/node_modules/.prisma/client/runtime/client.js:15:43982)
+    at async e.run (/home/unknown-master/meal/node_modules/.prisma/client/runtime/client.js:15:41223)
+    at async e.execute (/home/unknown-master/meal/node_modules/.prisma/client/runtime/client.js:61:682) {
+  cause: {
+    originalCode: '1',
+    originalMessage: 'SQLITE_ERROR: no such table: main.User',
+    kind: 'sqlite',
+    extendedCode: 1,
+    message: 'SQLITE_ERROR: no such table: main.User'
+  },
+  clientVersion: '7.1.0'
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "live_001",
+    "hostId": "pro_001",
+    "title": "Understanding Macronutrients: Protein, Carbs & Fats",
+    "description": "Join me for an interactive session on how to balance macronutrients for optimal health and fitness goals.",
+    "isActive": true,
+    "participants": "usr_001,usr_002,usr_005,usr_010,usr_015",
+    "startedAt": "2025-12-27T10:00:00.000Z",
+    "createdAt": "2025-12-27T09:45:00.000Z"
+  },
+  {
+    "id": "live_002",
+    "hostId": "pro_003",
+    "title": "Diabetes Management Through Diet",
+    "description": "Learn evidence-based strategies for managing blood sugar levels through nutrition.",
+    "isActive": false,
+    "participants": "usr_003,usr_007,usr_012",
+    "startedAt": "2025-12-26T15:00:00.000Z",
+    "createdAt": "2025-12-26T14:30:00.000Z"
+  },
+  {
+    "id": "live_003",
+    "hostId": "pro_005",
+    "title": "Meal Prep Sunday: Quick & Healthy Recipes",
+    "description": "I'll show you how to prepare an entire week's worth of nutritious meals in just 2 hours.",
+    "isActive": true,
+    "participants": "usr_004,usr_008,usr_009,usr_013,usr_018,usr_020",
+    "startedAt": "2025-12-27T11:30:00.000Z",
+    "createdAt": "2025-12-27T11:00:00.000Z"
+  }
+]

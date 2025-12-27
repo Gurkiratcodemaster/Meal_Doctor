@@ -5,24 +5,28 @@ import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
 import Professionals from "./components/Professionals";
 import Footer from "./components/footer";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./lib/firebase";
-
+import { useAuth } from "./providers/AuthProvider";
 
 export default function Home() {
-const router = useRouter();
-const [checking, setChecking] = useState(true);
+  const router = useRouter();
+  const { user, loading } = useAuth();
 
-useEffect(() => {
-  return onAuthStateChanged(auth, (user) => {
-    if (!user) router.push("/login");
-    else setChecking(false);
-  });
-}, []);
+  useEffect(() => {
+    // Redirect to feed if already logged in
+    if (!loading && user) {
+      router.push("/feed");
+    }
+  }, [user, loading, router]);
 
-if (checking) return <p>Loading...</p>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-900/30 via-black to-black flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    );
+  }
 
 
   return (

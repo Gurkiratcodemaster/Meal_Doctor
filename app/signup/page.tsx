@@ -2,21 +2,18 @@
 
 import { useState } from "react";
 import Button from "../components/Button";
-import { useRouter } from "next/navigation";
-import { auth, db } from "../lib/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, getDocs, query, collection, where } from "firebase/firestore";
 import Link from "next/link";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-
+import { useAuth } from "../providers/AuthProvider";
+import { motion } from "framer-motion";
 
 export default function SignupPage() {
-  const router = useRouter();
+  const { signup } = useAuth();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
+  const [username, setUsername] = useState("");
+  const [role, setRole] = useState<"user" | "professional">("user");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -26,7 +23,7 @@ export default function SignupPage() {
     e.preventDefault();
     setError("");
 
-    if (!firstName || !lastName || !email || !password || !confirmPassword || !role) {
+    if (!firstName || !lastName || !email || !username || !password || !confirmPassword) {
       setError("All fields are required");
       return;
     }
@@ -36,179 +33,143 @@ export default function SignupPage() {
       return;
     }
 
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+
     try {
       setLoading(true);
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
+      await signup({
         email,
-        password
-      );
-
-      const user = userCredential.user;
-      const username = `${firstName}${lastName}`.toLowerCase() + user.uid.slice(0, 5);
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
+        password,
         firstName,
         lastName,
         username,
-        email,
         role,
-        createdAt: new Date(),
       });
-      if (role === "user") {
-        router.push("/dashboard/user");
-      } else {
-        router.push("/dashboard/admin");
-      }
-
-
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || "Signup failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
-  const handleGoogleSignup = async () => {
-    setError("");
-    try {
-      setLoading(true);
-
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      const displayName = user.displayName || "";
-      const first = displayName.split(" ")[0] || "";
-      const last = displayName.split(" ").slice(1).join(" ") || "";
-
-      const username =
-        displayName.replace(/\s+/g, "").toLowerCase() + user.uid.slice(0, 5);
-
-      // save user profile (non-blocking)
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        firstName: first,
-        lastName: last,
-        username,
-        email: user.email,
-        role: "user", // default role
-        createdAt: new Date(),
-      });
-
-      router.push("/dashboard/user");
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
 
   return (
-    <div className="w-[80%] max-w-[350px] mx-auto flex flex-col items-center justify-center border-2 border-black 
-  rounded-2xl 
-  p-10 mt-16">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-900/30 via-black to-black p-6">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl p-8 rounded-2xl w-full max-w-md text-white"
+      >
+        <h1 className="text-3xl font-extrabold mb-6 text-center">
+          Create Account
+        </h1>
 
-      <h1 className="flex items-center text-3xl font-bold mb-2 text-black">
-        <img src="/home.png" className="w-15" />
-        <span className="font-bold text-xl">
-          Meal<span className="text-green-500">Doctor</span>
-        </span>
-      </h1>
+        <form onSubmit={handleSignup} className="flex flex-col space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <input
+              type="text"
+              placeholder="First Name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+              className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
 
-      <p className="text-sm mb-6">
-        Create your healthy journey account 🌱
-      </p>
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
+          </div>
 
-      <form onSubmit={handleSignup} className="flex flex-col space-y-4 w-full">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
 
-        <input
-          className="input border border-black/60 
-      rounded-lg text-black placeholder-gray-400 px-2 py-1
-      focus:outline-none"
-          placeholder="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
 
-        <input
-          className="input border border-black/60 
-      rounded-lg text-black placeholder-gray-400 px-2 py-1 focus:outline-none"
-          placeholder="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
+          <div className="flex items-center space-x-4">
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="user"
+                checked={role === "user"}
+                onChange={(e) => setRole(e.target.value as "user")}
+                className="text-green-500 focus:ring-green-500"
+              />
+              <span>User</span>
+            </label>
 
-        <input
-          className="input border border-black/60 
-      rounded-lg text-black placeholder-gray-400 px-2 py-1 focus:outline-none"
-          placeholder="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="professional"
+                checked={role === "professional"}
+                onChange={(e) => setRole(e.target.value as "professional")}
+                className="text-green-500 focus:ring-green-500"
+              />
+              <span>Professional</span>
+            </label>
+          </div>
 
-        <select
-          className="input border border-black/60 
-      rounded-lg text-black placeholder-gray-400 px-2 py-1 focus:outline-none"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-        >
-          <option value="" disabled>Select Role</option>
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
 
-        </select>
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
 
-        <input
-          className="input border border-black/60 
-      rounded-lg text-black placeholder-gray-400 px-2 py-1 focus:outline-none"
-          placeholder="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          {error && (
+            <p className="text-red-400 text-sm text-center">{error}</p>
+          )}
 
-        <input
-          className="input border border-black/60 
-      rounded-lg text-black placeholder-gray-400 px-2 py-1   focus:outline-none"
-          placeholder="Confirm Password"
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-green-500 text-black font-bold hover:scale-105 transition"
+          >
+            {loading ? "Creating Account..." : "Sign Up"}
+          </Button>
 
-        {error && (
-          <p className="text-red-400 text-sm text-center">{error}</p>
-        )}
-
-        <Button
-          className="bg-green-500  
-      py-3 rounded-xl 
-      hover:bg-green-400 hover:scale-[1.03]"
-          type="submit"
-        >
-          {loading ? "Creating account..." : "Sign Up"}
-        </Button>
-        <Button
-          type="button"
-          onClick={handleGoogleSignup}
-          className="w-full flex items-center justify-center gap-2 border border-black/40 hover:bg-gray-100 mb-4"
-        >
-          <img src="/google.png" className="w-5 h-5" />
-          Sign up with Google
-        </Button>
-
-
-        <p className="text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <Link href="/login" className="text-green-400 hover:underline">
-            Login
-          </Link>
-        </p>
-
-      </form>
+          <p className="text-center text-sm text-gray-300">
+            Already have an account?{" "}
+            <Link href="/login" className="text-green-400 hover:underline">
+              Login
+            </Link>
+          </p>
+        </form>
+      </motion.div>
     </div>
-
   );
 }

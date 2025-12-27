@@ -1,0 +1,82 @@
+[
+  {
+    "id": "msg_001",
+    "senderId": "usr_001",
+    "receiverId": "pro_001",
+    "content": "Hi Dr. Singh! I have a question about my nutrition plan.",
+    "createdAt": "2025-12-27T08:30:00.000Z",
+    "read": true
+  },
+  {
+    "id": "msg_002",
+    "senderId": "pro_001",
+    "receiverId": "usr_001",
+    "content": "Hello Rajesh! I'd be happy to help. What's your question?",
+    "createdAt": "2025-12-27T08:35:00.000Z",
+    "read": true
+  },
+  {
+    "id": "msg_003",
+    "senderId": "usr_001",
+    "receiverId": "pro_001",
+    "content": "I'm trying to understand the right protein intake for my weight training goals.",
+    "createdAt": "2025-12-27T08:40:00.000Z",
+    "read": true
+  },
+  {
+    "id": "msg_004",
+    "senderId": "pro_001",
+    "receiverId": "usr_001",
+    "content": "For weight training, I recommend 1.6-2.2g of protein per kg of body weight. What's your current weight?",
+    "createdAt": "2025-12-27T08:45:00.000Z",
+    "read": false
+  },
+  {
+    "id": "msg_005",
+    "senderId": "usr_002",
+    "receiverId": "pro_002",
+    "content": "Hi Priya! Can you help me with a vegetarian diet plan?",
+    "createdAt": "2025-12-27T09:00:00.000Z",
+    "read": true
+  },
+  {
+    "id": "msg_006",
+    "senderId": "pro_002",
+    "receiverId": "usr_002",
+    "content": "Absolutely! I specialize in plant-based nutrition. Tell me about your goals.",
+    "createdAt": "2025-12-27T09:10:00.000Z",
+    "read": true
+  },
+  {
+    "id": "msg_007",
+    "senderId": "usr_003",
+    "receiverId": "pro_003",
+    "content": "I need help managing my diabetes through diet.",
+    "createdAt": "2025-12-27T10:00:00.000Z",
+    "read": true
+  },
+  {
+    "id": "msg_008",
+    "senderId": "pro_003",
+    "receiverId": "usr_003",
+    "content": "I can definitely help with that. Let's start with understanding your current eating habits.",
+    "createdAt": "2025-12-27T10:15:00.000Z",
+    "read": false
+  },
+  {
+    "id": "msg_009",
+    "senderId": "usr_004",
+    "receiverId": "pro_004",
+    "content": "What's your consultation fee for a personalized meal plan?",
+    "createdAt": "2025-12-27T11:00:00.000Z",
+    "read": true
+  },
+  {
+    "id": "msg_010",
+    "senderId": "pro_004",
+    "receiverId": "usr_004",
+    "content": "My consultation fee is ₹2000 for a comprehensive meal plan with follow-ups.",
+    "createdAt": "2025-12-27T11:20:00.000Z",
+    "read": true
+  }
+]

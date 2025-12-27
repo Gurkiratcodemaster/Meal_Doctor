@@ -1,92 +1,66 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { auth } from "../lib/firebase";
-import { signOut } from "firebase/auth";
-
+import { useAuth } from "../providers/AuthProvider";
 import {
-  Search,
   Compass,
   MessageCircle,
   User,
   Bell,
-  MoreHorizontal
+  LogOut,
+  Home,
 } from "lucide-react";
 import Link from "next/link";
 
 export default function Navbar() {
-  const [showMore, setShowMore] = useState(false);
   const router = useRouter();
-  const handleSignOut = async () => {
+  const { logout } = useAuth();
 
-    await signOut(auth);
-    router.push("/login");
+  const handleLogout = () => {
+    logout();
   };
+
   return (
-    <div>
-      <div className="flex flex-col h-screen px-2 w-[10%] md:w-1/5 min-w-[65px] border-r-2 border-black space-y-8">
+    <aside className="h-screen w-[220px] border border-white/10 bg-black/40 backdrop-blur-xl p-4 flex flex-col gap-6">
+      
+      <Link href="/" className="text-xl font-bold text-white">
+        Meal<span className="text-green-500">Doctor</span>
+      </Link>
 
-        <Link href="/" className="flex items-center text-black">
-          <img src="/home.png" className="w-[40px]" />
-          <span className="hidden md:inline font-bold text-xl">
-            Meal<span className="text-green-500">Doctor</span>
-          </span>
-        </Link>
-        <NavLink href="/Explore" >
-          <Compass className="inline" /> <span className="hidden  md:inline ml-1">Explore</span>
-        </NavLink><NavLink href="/Messages" >
-          <MessageCircle className="inline" /><span className="hidden md:inline ml-1">Messages</span>
-        </NavLink>
-        <NavLink href="/Notifications" >
-          <Bell className="inline" /><span className="hidden md:inline ml-1">Notifications</span>
-        </NavLink>
-        <NavLink href="/Profile" >
-          <User className="inline" /> <span className="hidden md:inline ml-1">Profile</span>
-        </NavLink>
-        <div className="relative">
-          <button
-            onClick={() => setShowMore(!showMore)}
-            className="w-full text-left transition-all duration-300 px-2 p-2 hover:bg-gray-200 hover:rounded-lg"
-          >
-            <MoreHorizontal className="inline" />
-            <span className="hidden md:inline ml-2">More</span>
-          </button>
+      <nav className="flex flex-col gap-2 text-sm">
+        <NavItem href="/feed" icon={<Home />} label="Feed" />
+        <NavItem href="/explore" icon={<Compass />} label="Explore" />
+        <NavItem href="/messages" icon={<MessageCircle />} label="Messages" />
+        <NavItem href="/notifications" icon={<Bell />} label="Notifications" />
+        <NavItem href="/dashboard/user" icon={<User />} label="Profile" />
+      </nav>
 
-          {showMore && (
-            <div className="absolute left-full ml-3 bottom-0 bg-white border-2 rounded-lg shadow-md w-30">
-              <button
-                onClick={handleSignOut}
-                className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
-              >
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+      <button
+        onClick={handleLogout}
+        className="mt-auto flex items-center gap-2 text-red-400 hover:text-red-300 transition"
+      >
+        <LogOut className="w-4 h-4" /> Logout
+      </button>
+    </aside>
   );
 }
-function NavLink({
+
+function NavItem({
   href,
-  children,
-  mobile = false,
+  icon,
+  label,
 }: {
   href: string;
-  children: React.ReactNode;
-  mobile?: boolean;
+  icon: React.ReactNode;
+  label: string;
 }) {
   return (
     <Link
       href={href}
-      className={`
-        ${mobile ? "block py-3" : ""}
-        transition-all duration-300 px-2 p-2
-        hover:bg-gray-200 hover:rounded-lg
-      `}
+      className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100"
     >
-      {children}
+      {icon}
+      {label}
     </Link>
   );
 }

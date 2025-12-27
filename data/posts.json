@@ -1,0 +1,182 @@
+[
+  {
+    "id": "post-1",
+    "authorId": "prof-1",
+    "content": "5 superfoods you should eat daily for optimal health! 🥗\n\n1. Spinach - packed with iron and vitamins\n2. Blueberries - antioxidant powerhouse\n3. Salmon - omega-3 rich\n4. Quinoa - complete protein\n5. Almonds - healthy fats\n\nWhich one is your favorite?",
+    "image": null,
+    "likes": 342,
+    "comments": 28,
+    "createdAt": "2024-12-20T10:30:00Z"
+  },
+  {
+    "id": "post-2",
+    "authorId": "prof-2",
+    "content": "The truth about intermittent fasting - my experience and research 🕐\n\nAfter working with 100+ athletes, here's what I've learned:\n\n✅ It works, but not for everyone\n✅ Timing matters more than duration\n✅ Listen to your body\n✅ Don't skip hydration\n\nWant to try IF? Start with 12:12 and gradually extend.",
+    "image": null,
+    "likes": 567,
+    "comments": 43,
+    "createdAt": "2024-12-22T14:15:00Z"
+  },
+  {
+    "id": "post-3",
+    "authorId": "prof-3",
+    "content": "My client lost 20kg in 3 months! Here's how we did it 💪\n\nNo crash diets. No starvation. Just:\n\n• Calorie deficit (500 cal/day)\n• 30 min daily walking\n• Protein-rich breakfast\n• Meal prep on Sundays\n• Consistency over perfection\n\nSlow and steady wins the race!",
+    "image": "/post-weight-loss.jpg",
+    "likes": 1234,
+    "comments": 89,
+    "createdAt": "2024-12-18T09:00:00Z"
+  },
+  {
+    "id": "post-4",
+    "authorId": "prof-4",
+    "content": "Managing diabetes through diet is POSSIBLE! 🎯\n\nKey principles:\n1. Low GI foods\n2. Portion control\n3. Regular meal timing\n4. Include fiber\n5. Monitor blood sugar\n\nMy patients have reduced medication by 50% following these principles. Always consult your doctor first!",
+    "image": null,
+    "likes": 456,
+    "comments": 34,
+    "createdAt": "2024-12-21T11:45:00Z"
+  },
+  {
+    "id": "post-5",
+    "authorId": "prof-5",
+    "content": "Your heart will thank you for eating these foods! ❤️\n\n• Oats - reduce cholesterol\n• Berries - improve arterial function\n• Nuts - lower inflammation\n• Fatty fish - protect heart\n• Dark chocolate (70%+) - improve blood flow\n\nSmall changes, BIG impact!",
+    "image": "/post-heart-health.jpg",
+    "likes": 789,
+    "comments": 52,
+    "createdAt": "2024-12-19T16:20:00Z"
+  },
+  {
+    "id": "post-6",
+    "authorId": "prof-6",
+    "content": "Plant-based protein sources that actually work! 🌱\n\nStop worrying about protein on a vegan diet. These foods have you covered:\n\n• Lentils - 18g per cup\n• Chickpeas - 15g per cup\n• Tofu - 20g per cup\n• Tempeh - 31g per cup\n• Quinoa - 8g per cup\n\nEasy to hit your daily protein goals!",
+    "image": null,
+    "likes": 923,
+    "comments": 67,
+    "createdAt": "2024-12-23T08:30:00Z"
+  },
+  {
+    "id": "post-7",
+    "authorId": "prof-7",
+    "content": "The gut-brain connection: How your diet affects your mood 🧠\n\nYour gut produces 90% of serotonin! Feed it well:\n\n🥬 Fermented foods (kimchi, yogurt)\n🥬 Prebiotic fiber (garlic, onions)\n🥬 Omega-3s (fish, walnuts)\n🥬 Polyphenols (berries, tea)\n\nHappy gut = Happy mind!",
+    "image": "/post-gut-brain.jpg",
+    "likes": 1456,
+    "comments": 103,
+    "createdAt": "2024-12-17T13:00:00Z"
+  },
+  {
+    "id": "post-8",
+    "authorId": "prof-8",
+    "content": "Getting kids to eat healthy doesn't have to be a battle! 🍎\n\n5 strategies that work:\n\n1. Make it colorful\n2. Let them help in cooking\n3. Create fun shapes\n4. Don't force, just offer\n5. Be a role model\n\nRemember: You're establishing habits for life!",
+    "image": null,
+    "likes": 634,
+    "comments": 45,
+    "createdAt": "2024-12-24T10:15:00Z"
+  },
+  {
+    "id": "post-9",
+    "authorId": "prof-9",
+    "content": "Pre-workout vs post-workout nutrition - timing matters! ⏰\n\nPRE (30-60 min before):\n• Carbs for energy\n• Light protein\n• Stay hydrated\n\nPOST (within 2 hours):\n• Protein for recovery\n• Carbs to replenish\n• Rehydrate\n\nTiming can boost your results by 30%!",
+    "image": "/post-workout-nutrition.jpg",
+    "likes": 1123,
+    "comments": 76,
+    "createdAt": "2024-12-16T15:45:00Z"
+  },
+  {
+    "id": "post-10",
+    "authorId": "prof-10",
+    "content": "Ancient Ayurvedic wisdom meets modern science! 🕉️\n\nAccording to your dosha:\n\nVATA: Warm, grounding foods\nPITTA: Cooling, calming foods\nKAPHA: Light, energizing foods\n\nKnow your body type, eat accordingly. DM for your dosha assessment!",
+    "image": null,
+    "likes": 567,
+    "comments": 39,
+    "createdAt": "2024-12-25T12:00:00Z"
+  },
+  {
+    "id": "post-11",
+    "authorId": "prof-11",
+    "content": "The science behind keto: Does it really work? 🧪\n\nYES, but with caveats:\n\n✅ Rapid weight loss initially\n✅ Reduced appetite\n✅ Better focus\n\n⚠️ Keto flu in first week\n⚠️ Not sustainable for everyone\n⚠️ Need medical supervision\n\nIt's a tool, not a magic solution!",
+    "image": "/post-keto.jpg",
+    "likes": 892,
+    "comments": 64,
+    "createdAt": "2024-12-15T09:30:00Z"
+  },
+  {
+    "id": "post-12",
+    "authorId": "prof-12",
+    "content": "Pregnancy nutrition 101: What you REALLY need 🤰\n\nForget 'eating for two' - you only need 300 extra calories!\n\nFocus on:\n• Folate (leafy greens)\n• Iron (lean meat, lentils)\n• Calcium (dairy, fortified foods)\n• DHA (fatty fish)\n• Hydration (lots of water)\n\nQuality over quantity!",
+    "image": null,
+    "likes": 723,
+    "comments": 51,
+    "createdAt": "2024-12-22T14:30:00Z"
+  },
+  {
+    "id": "post-13",
+    "authorId": "prof-13",
+    "content": "Food and mood: The connection is REAL! 😊\n\nDepression? Try these:\n• Omega-3s\n• B vitamins\n• Tryptophan\n• Magnesium\n\nAnxiety? Include:\n• Complex carbs\n• Chamomile tea\n• Probiotic foods\n\nNutrition isn't a cure, but it's powerful support!",
+    "image": "/post-mental-health.jpg",
+    "likes": 1567,
+    "comments": 112,
+    "createdAt": "2024-12-14T11:15:00Z"
+  },
+  {
+    "id": "post-14",
+    "authorId": "prof-14",
+    "content": "Want glowing skin? Start in your kitchen! ✨\n\nBest foods for beautiful skin:\n\n🥑 Avocado - healthy fats\n🍊 Vitamin C - collagen production\n🥜 Vitamin E - protection\n🐟 Omega-3 - inflammation\n💧 Water - hydration\n\nBeauty from within!",
+    "image": null,
+    "likes": 2341,
+    "comments": 156,
+    "createdAt": "2024-12-26T16:00:00Z"
+  },
+  {
+    "id": "post-15",
+    "authorId": "prof-15",
+    "content": "Anti-aging through nutrition - my top 5 secrets! 🌟\n\n1. Intermittent fasting\n2. Antioxidant-rich foods\n3. Reduce sugar\n4. Increase healthy fats\n5. Stay hydrated\n\nMy clients in their 60s feel like they're 40! It's never too late to start.",
+    "image": "/post-anti-aging.jpg",
+    "likes": 876,
+    "comments": 59,
+    "createdAt": "2024-12-13T10:45:00Z"
+  },
+  {
+    "id": "post-16",
+    "authorId": "prof-16",
+    "content": "Managing PCOS naturally - it IS possible! 💚\n\nDiet changes that help:\n• Low GI carbs\n• Anti-inflammatory foods\n• Reduce dairy (for some)\n• Increase fiber\n• Balance blood sugar\n\n70% of my PCOS patients see improvement in 3 months!",
+    "image": null,
+    "likes": 1234,
+    "comments": 98,
+    "createdAt": "2024-12-20T13:20:00Z"
+  },
+  {
+    "id": "post-17",
+    "authorId": "prof-17",
+    "content": "Bulking vs Cutting: The nutrition guide 💪\n\nBULKING:\n• 300-500 cal surplus\n• 1g protein per lb\n• Train heavy\n\nCUTTING:\n• 300-500 cal deficit\n• 1.2g protein per lb\n• High intensity\n\nConsistency is everything!",
+    "image": "/post-bodybuilding.jpg",
+    "likes": 2156,
+    "comments": 143,
+    "createdAt": "2024-12-12T15:30:00Z"
+  },
+  {
+    "id": "post-18",
+    "authorId": "prof-18",
+    "content": "Holistic health isn't just about food 🌿\n\nBalance these 5 areas:\n\n1. Nutrition\n2. Movement\n3. Sleep\n4. Stress management\n5. Connection\n\nOne without the others is incomplete. Treat your body as a whole system!",
+    "image": null,
+    "likes": 945,
+    "comments": 67,
+    "createdAt": "2024-12-23T09:45:00Z"
+  },
+  {
+    "id": "post-19",
+    "authorId": "prof-19",
+    "content": "My favorite intermittent fasting schedule: 16:8 ⏱️\n\nEat: 12pm - 8pm\nFast: 8pm - 12pm\n\nBenefits:\n• Autophagy\n• Fat burning\n• Mental clarity\n• Cellular repair\n\nStarting my live session on IF tomorrow! Join me!",
+    "image": "/post-if-schedule.jpg",
+    "likes": 1678,
+    "comments": 125,
+    "createdAt": "2024-12-19T11:00:00Z"
+  },
+  {
+    "id": "post-20",
+    "authorId": "prof-20",
+    "content": "Living with food allergies? You're not alone! 🤝\n\nCommon allergens:\n• Peanuts\n• Tree nuts\n• Dairy\n• Eggs\n• Soy\n• Wheat\n• Fish\n• Shellfish\n\nAlways read labels. Carry epinephrine. Educate others. Stay safe!",
+    "image": null,
+    "likes": 534,
+    "comments": 42,
+    "createdAt": "2024-12-25T14:15:00Z"
+  }
+]
