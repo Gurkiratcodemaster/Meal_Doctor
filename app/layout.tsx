@@ -1,35 +1,22 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "./providers/AuthProvider";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Meal Doctor - Your AI Health & Nutrition Platform",
-  description: "Connect with professional nutritionists, get personalized meal plans, and achieve your health goals.",
-};
+import Navbar from "@/app/components/Navbar";
+import { AuthProvider } from "@/app/providers/AuthProvider";
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body>
         <AuthProvider>
-          {children}
+          <div className="flex">
+            <Navbar />
+            <div className="flex-1">
+              {children}
+            </div>
+          </div>
         </AuthProvider>
       </body>
     </html>

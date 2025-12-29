@@ -8,29 +8,30 @@ import { DataService } from "@/app/lib/services/data";
 import Post from "@/app/components/Post";
 import { motion } from "framer-motion";
 import {
-  ArrowLeft,
   MessageCircle,
   UserPlus,
   UserMinus,
-  MapPin,
   Calendar,
-  TrendingUp,
   IndianRupee,
-  Video,
   CheckCircle2,
 } from "lucide-react";
 import Link from "next/link";
 
+/* -------------------------------------------------- */
+/* MAIN PAGE */
+/* -------------------------------------------------- */
+
 export default function ProfilePage() {
   const params = useParams();
+  const username = params?.username as string | undefined;
+
   const router = useRouter();
   const { user: currentUser, isAuthenticated } = useAuth();
-  const username = params.username as string;
 
   const [profileUser, setProfileUser] = useState<User | null>(null);
   const [posts, setPosts] = useState<any[]>([]);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<"posts" | "about">("posts");
 
   useEffect(() => {
@@ -38,36 +39,32 @@ export default function ProfilePage() {
       router.push("/login");
       return;
     }
-    loadProfile();
-  }, [username, isAuthenticated, router]);
+    if (username) {
+      loadProfile(username);
+    }
+  }, [username, isAuthenticated]);
 
-  const loadProfile = () => {
+  const loadProfile = (username: string) => {
     setLoading(true);
 
-    // Find user by username
-    const user = AuthService.getUserByUsername(username);
+    const user = AuthService.getUserByUsername(username) as User | null;
+
     if (!user) {
       router.push("/explore");
       return;
     }
 
-    setProfileUser(user as User);
+    setProfileUser(user);
 
-    // Get user's posts
-    const userPosts = DataService.getPostsByAuthor(user.id)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
-    const postsWithAuthor = userPosts.map((post) => ({
+    const userPosts = DataService.getPostsByAuthor(user.id).map((post) => ({
       ...post,
       author: user,
     }));
 
-    setPosts(postsWithAuthor);
+    setPosts(userPosts);
 
-    // Check if current user follows this profile
     if (currentUser) {
-      const isFollowingUser = DataService.isFollowing(currentUser.id, user.id);
-      setIsFollowing(isFollowingUser);
+      setIsFollowing(DataService.isFollowing(currentUser.id, user.id));
     }
 
     setLoading(false);
@@ -78,269 +75,263 @@ export default function ProfilePage() {
 
     if (isFollowing) {
       DataService.unfollow(currentUser.id, profileUser.id);
-      setIsFollowing(false);
-      // Update follower count
-      setProfileUser({ ...profileUser, followers: profileUser.followers - 1 });
+      setProfileUser((prev) =>
+        prev ? { ...prev, followers: prev.followers - 1 } : prev
+      );
     } else {
       DataService.follow(currentUser.id, profileUser.id);
-      setIsFollowing(true);
-      // Update follower count
-      setProfileUser({ ...profileUser, followers: profileUser.followers + 1 });
+      setProfileUser((prev) =>
+        prev ? { ...prev, followers: prev.followers + 1 } : prev
+      );
     }
+
+    setIsFollowing((prev) => !prev);
   };
 
-  const handleMessage = () => {
-    if (!profileUser) return;
-    router.push(`/messages?user=${profileUser.id}`);
-  };
-
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("en-US", {
-      month: "long",
-      year: "numeric",
-    });
-  };
-
-  if (loading) {
+  if (loading || !profileUser) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black">
+        <div className="h-10 w-10 border-2 border-black dark:border-green-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
-  if (!profileUser) {
-    return null;
-  }
-
   const isOwnProfile = currentUser?.id === profileUser.id;
+  const isProfessional: boolean = profileUser.role === "professional";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-900/30 via-black to-black text-white">
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
-          <button
-            onClick={() => router.back()}
-            className="p-2 hover:bg-white/5 rounded-full transition"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <div>
-            <h1 className="text-xl font-bold">
-              {profileUser.firstName} {profileUser.lastName}
-            </h1>
-            <p className="text-sm text-gray-400">{posts.length} posts</p>
-          </div>
-        </div>
-      </div>
+    <main
+      className="
+        min-h-screen
+        bg-gray-50 dark:bg-black
+        px-4 py-8
+        md:pl-20 lg:pl-56
+      "
+    >
+      <div className="max-w-3xl mx-auto">
+        {/* PROFILE HEADER */}
+        <ProfileHeader
+          user={profileUser}
+          postsCount={posts.length}
+          isOwnProfile={isOwnProfile}
+          isFollowing={isFollowing}
+          onFollow={handleFollow}
+        />
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Profile Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          {/* Cover Photo Placeholder */}
-          <div className="h-48 bg-gradient-to-r from-green-600 to-green-800 rounded-xl mb-6 relative">
-            {profileUser.isLive && (
-              <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-2 animate-pulse">
-                <Video className="w-4 h-4" />
-                LIVE
-              </div>
-            )}
-          </div>
-
-          {/* Profile Info */}
-          <div className="flex flex-col md:flex-row gap-6">
-            {/* Avatar */}
-            <div className="-mt-16 relative">
-              <img
-                src={profileUser.photo || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profileUser.username}`}
-                alt={profileUser.firstName}
-                className="w-32 h-32 rounded-full border-4 border-black object-cover bg-gray-800"
-              />
-              {profileUser.role === "professional" && (
-                <div className="absolute bottom-2 right-2 bg-green-500 rounded-full p-1">
-                  <CheckCircle2 className="w-5 h-5 text-black" />
-                </div>
-              )}
-            </div>
-
-            {/* User Info */}
-            <div className="flex-1">
-              <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
-                <div>
-                  <h2 className="text-2xl font-bold flex items-center gap-2">
-                    {profileUser.firstName} {profileUser.lastName}
-                  </h2>
-                  <p className="text-gray-400">@{profileUser.username}</p>
-                  {profileUser.role === "professional" && profileUser.specialization && (
-                    <p className="text-green-400 font-medium mt-1">
-                      {profileUser.specialization}
-                    </p>
-                  )}
-                </div>
-
-                {/* Action Buttons */}
-                {!isOwnProfile && (
-                  <div className="flex gap-2">
-                    <button
-                      onClick={handleMessage}
-                      className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                      Message
-                    </button>
-                    <button
-                      onClick={handleFollow}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-full transition ${
-                        isFollowing
-                          ? "bg-white/10 hover:bg-red-500/20 text-white hover:text-red-400"
-                          : "bg-green-500 hover:bg-green-600 text-black font-semibold"
-                      }`}
-                    >
-                      {isFollowing ? (
-                        <>
-                          <UserMinus className="w-4 h-4" />
-                          Unfollow
-                        </>
-                      ) : (
-                        <>
-                          <UserPlus className="w-4 h-4" />
-                          Follow
-                        </>
-                      )}
-                    </button>
-                  </div>
-                )}
-
-                {isOwnProfile && (
-                  <Link
-                    href={profileUser.role === "professional" ? "/dashboard/admin/edit" : "/dashboard/user/edit"}
-                    className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition"
-                  >
-                    Edit Profile
-                  </Link>
-                )}
-              </div>
-
-              {/* Bio */}
-              {profileUser.bio && (
-                <p className="text-gray-300 mb-4">{profileUser.bio}</p>
-              )}
-
-              {/* Stats */}
-              <div className="flex flex-wrap gap-6 mb-4">
-                <div>
-                  <span className="font-bold text-white">{profileUser.followers}</span>
-                  <span className="text-gray-400 ml-1">Followers</span>
-                </div>
-                <div>
-                  <span className="font-bold text-white">{profileUser.following}</span>
-                  <span className="text-gray-400 ml-1">Following</span>
-                </div>
-                <div>
-                  <span className="font-bold text-white">{posts.length}</span>
-                  <span className="text-gray-400 ml-1">Posts</span>
-                </div>
-              </div>
-
-              {/* Additional Info */}
-              <div className="flex flex-wrap gap-4 text-sm text-gray-400">
-                <div className="flex items-center gap-1">
-                  <Calendar className="w-4 h-4" />
-                  Joined {formatDate(profileUser.createdAt)}
-                </div>
-                {profileUser.role === "professional" && profileUser.consultationPrice && (
-                  <div className="flex items-center gap-1 text-green-400">
-                    <IndianRupee className="w-4 h-4" />
-                    ₹{profileUser.consultationPrice} consultation
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Tabs */}
-        <div className="border-b border-white/10 mb-6">
-          <div className="flex gap-8">
-            <button
-              onClick={() => setActiveTab("posts")}
-              className={`pb-4 px-1 border-b-2 transition ${
-                activeTab === "posts"
-                  ? "border-green-500 text-white font-semibold"
-                  : "border-transparent text-gray-400 hover:text-white"
-              }`}
-            >
-              Posts
-            </button>
-            <button
-              onClick={() => setActiveTab("about")}
-              className={`pb-4 px-1 border-b-2 transition ${
-                activeTab === "about"
-                  ? "border-green-500 text-white font-semibold"
-                  : "border-transparent text-gray-400 hover:text-white"
-              }`}
-            >
-              About
-            </button>
-          </div>
+        {/* TABS */}
+        <div className="flex gap-8 border-b border-black/15 dark:border-green-500/20 mb-6">
+          <TabButton
+            label="Posts"
+            active={activeTab === "posts"}
+            onClick={() => setActiveTab("posts")}
+          />
+          <TabButton
+            label="About"
+            active={activeTab === "about"}
+            onClick={() => setActiveTab("about")}
+          />
         </div>
 
-        {/* Content */}
+        {/* TAB CONTENT */}
         {activeTab === "posts" ? (
-          <div className="space-y-6">
-            {posts.length === 0 ? (
-              <div className="text-center py-12">
-                <TrendingUp className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-400">No posts yet</p>
-              </div>
-            ) : (
-              posts.map((post) => (
+          posts.length > 0 ? (
+            <div className="space-y-6">
+              {posts.map((post) => (
                 <Post key={post.id} post={post} author={post.author} />
-              ))
-            )}
-          </div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6"
-          >
-            <h3 className="text-xl font-semibold mb-4">About</h3>
-            <div className="space-y-4 text-gray-300">
-              {profileUser.bio ? (
-                <p>{profileUser.bio}</p>
-              ) : (
-                <p className="text-gray-500 italic">No bio available</p>
-              )}
-
-              {profileUser.role === "professional" && (
-                <div className="pt-4 border-t border-white/10">
-                  <h4 className="font-semibold text-white mb-2">Professional Details</h4>
-                  {profileUser.specialization && (
-                    <p className="mb-2">
-                      <span className="text-gray-400">Specialization:</span>{" "}
-                      {profileUser.specialization}
-                    </p>
-                  )}
-                  {profileUser.consultationPrice && (
-                    <p>
-                      <span className="text-gray-400">Consultation Fee:</span>{" "}
-                      <span className="text-green-400 font-semibold">
-                        ₹{profileUser.consultationPrice}
-                      </span>
-                    </p>
-                  )}
-                </div>
-              )}
+              ))}
             </div>
-          </motion.div>
+          ) : (
+            <p className="text-gray-500 text-center py-12">
+              No posts yet
+            </p>
+          )
+        ) : isProfessional ? (
+          <ProfessionalAbout user={profileUser} />
+        ) : (
+          <UserAbout user={profileUser} />
         )}
       </div>
+    </main>
+  );
+}
+
+/* -------------------------------------------------- */
+/* SUBCOMPONENTS */
+/* -------------------------------------------------- */
+
+interface ProfileHeaderProps {
+  user: User;
+  postsCount: number;
+  isOwnProfile: boolean;
+  isFollowing: boolean;
+  onFollow: () => void;
+}
+
+function ProfileHeader({
+  user,
+  postsCount,
+  isOwnProfile,
+  isFollowing,
+  onFollow,
+}: ProfileHeaderProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="
+        bg-white dark:bg-zinc-950
+        border border-black/15 dark:border-green-500/20
+        rounded-2xl p-6 mb-8
+      "
+    >
+      <div className="flex flex-col sm:flex-row gap-6">
+        {/* Avatar */}
+        <div className="relative">
+          <img
+            src={
+              user.photo ??
+              `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`
+            }
+            alt={user.username}
+            className="w-28 h-28 rounded-full object-cover"
+          />
+          {user.role === "professional" && (
+            <span className="absolute bottom-1 right-1 bg-green-500 rounded-full p-1">
+              <CheckCircle2 className="w-4 h-4 text-black" />
+            </span>
+          )}
+        </div>
+
+        {/* Info */}
+        <div className="flex-1">
+          <h1 className="text-2xl font-bold text-black dark:text-green-400">
+            {user.firstName} {user.lastName}
+          </h1>
+          <p className="text-gray-500 dark:text-green-400/60">
+            @{user.username}
+          </p>
+
+          {user.specialization && (
+            <p className="text-green-600 dark:text-green-400 mt-1 font-medium">
+              {user.specialization}
+            </p>
+          )}
+
+          {/* Stats */}
+          <div className="flex gap-6 mt-4 text-sm">
+            <Stat label="Followers" value={user.followers} />
+            <Stat label="Following" value={user.following} />
+            <Stat label="Posts" value={postsCount} />
+          </div>
+
+          {/* Actions */}
+          {!isOwnProfile ? (
+            <div className="flex gap-2 mt-4">
+              <Link
+                href={`/messages?user=${user.id}`}
+                className="px-4 py-2 rounded-full bg-black/10 dark:bg-black/30"
+              >
+                <MessageCircle className="w-4 h-4 inline mr-1" />
+                Message
+              </Link>
+
+              <button
+                onClick={onFollow}
+                className={`px-4 py-2 rounded-full transition ${
+                  isFollowing
+                    ? "bg-black/10 dark:bg-black/30"
+                    : "bg-green-500 text-black font-semibold"
+                }`}
+              >
+                {isFollowing ? (
+                  <>
+                    <UserMinus className="w-4 h-4 inline" /> Unfollow
+                  </>
+                ) : (
+                  <>
+                    <UserPlus className="w-4 h-4 inline" /> Follow
+                  </>
+                )}
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/dashboard/user/edit"
+              className="inline-block mt-4 px-4 py-2 rounded-full bg-black/10 dark:bg-black/30"
+            >
+              Edit Profile
+            </Link>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function ProfessionalAbout({ user }: { user: User }) {
+  return (
+    <div className="bg-white dark:bg-zinc-950 border border-black/15 dark:border-green-500/20 rounded-xl p-6 space-y-4">
+      <p className="text-gray-700 dark:text-green-300">
+        {user.bio ?? "No bio available."}
+      </p>
+
+      {user.consultationPrice !== undefined && (
+        <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
+          <IndianRupee className="w-4 h-4" />
+          ₹{user.consultationPrice} per session
+        </div>
+      )}
+
+      <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-green-400/60">
+        <Calendar className="w-4 h-4" />
+        Joined {new Date(user.createdAt).toLocaleDateString()}
+      </div>
     </div>
+  );
+}
+
+function UserAbout({ user }: { user: User }) {
+  return (
+    <div className="bg-white dark:bg-zinc-950 border border-black/15 dark:border-green-500/20 rounded-xl p-6 space-y-4">
+      <p className="text-gray-700 dark:text-green-300">
+        {user.bio ?? "This user hasn’t added a bio yet."}
+      </p>
+
+      <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-green-400/60">
+        <Calendar className="w-4 h-4" />
+        Joined {new Date(user.createdAt).toLocaleDateString()}
+      </div>
+    </div>
+  );
+}
+
+function TabButton({
+  label,
+  active,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`pb-3 ${
+        active
+          ? "border-b-2 border-black dark:border-green-500 font-semibold"
+          : "text-gray-500"
+      }`}
+    >
+      {label}
+    </button>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: number }) {
+  return (
+    <span>
+      <b className="text-black dark:text-green-400">{value}</b> {label}
+    </span>
   );
 }

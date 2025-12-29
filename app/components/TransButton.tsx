@@ -8,7 +8,7 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-const Button = ({ children, onClick, type = "button",disabled = false, className = "" }: ButtonProps) => {
+const TransButton = ({ children, onClick, type = "button",disabled = false, className = "" }: ButtonProps) => {
   return (
     <button
       type={type}
@@ -23,4 +23,4 @@ const Button = ({ children, onClick, type = "button",disabled = false, className
   );
 };
 
-export default Button;
+export default TransButton;
