@@ -4,7 +4,6 @@ import { useState } from "react";
 import Button from "../components/Button";
 import Link from "next/link";
 import { useAuth } from "../providers/AuthProvider";
-import { motion } from "framer-motion";
 
 export default function SignupPage() {
   const { signup } = useAuth();
@@ -56,120 +55,156 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-900/30 via-black to-black p-6">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl p-8 rounded-2xl w-full max-w-md text-white"
-      >
-        <h1 className="text-3xl font-extrabold mb-6 text-center">
-          Create Account
-        </h1>
+    // Page Container: Light gray background, flex centering
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4 sm:p-6">
+      
+      {/* Card Container: White background, shadow, responsive width */}
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
+        
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-extrabold text-gray-900">
+            Create Account
+          </h1>
+          <p className="text-sm text-gray-500 mt-2">
+            Join us to get started today
+          </p>
+        </div>
 
-        <form onSubmit={handleSignup} className="flex flex-col space-y-4">
+        <form onSubmit={handleSignup} className="space-y-5">
+          {/* Name Grid */}
           <div className="grid grid-cols-2 gap-4">
-            <input
-              type="text"
-              placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-              className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+              <input
+                type="text"
+                placeholder="John"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+                className="w-full px-4 py-2 rounded-md bg-white border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+              />
+            </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+              <input
+                type="text"
+                placeholder="Doe"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+                className="w-full px-4 py-2 rounded-md bg-white border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+              />
+            </div>
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
             <input
-              type="text"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
-              className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-2 rounded-md bg-white border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
             />
           </div>
 
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-
-          <div className="flex items-center space-x-4">
-            <label className="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="radio"
-                name="role"
-                value="user"
-                checked={role === "user"}
-                onChange={(e) => setRole(e.target.value as "user")}
-                className="text-green-500 focus:ring-green-500"
-              />
-              <span>User</span>
-            </label>
-
-            <label className="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="radio"
-                name="role"
-                value="professional"
-                checked={role === "professional"}
-                onChange={(e) => setRole(e.target.value as "professional")}
-                className="text-green-500 focus:ring-green-500"
-              />
-              <span>Professional</span>
-            </label>
+          {/* Username */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+            <input
+              type="text"
+              placeholder="johndoe123"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              className="w-full px-4 py-2 rounded-md bg-white border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+            />
           </div>
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
+          {/* Role Selection */}
+          <div>
+            <span className="block text-sm font-medium text-gray-700 mb-2">I am a:</span>
+            <div className="flex items-center space-x-6">
+              <label className="flex items-center space-x-2 cursor-pointer group">
+                <input
+                  type="radio"
+                  name="role"
+                  value="user"
+                  checked={role === "user"}
+                  onChange={(e) => setRole(e.target.value as "user")}
+                  className="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500 accent-green-600"
+                />
+                <span className="text-gray-700 group-hover:text-green-600 transition">User</span>
+              </label>
 
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
+              <label className="flex items-center space-x-2 cursor-pointer group">
+                <input
+                  type="radio"
+                  name="role"
+                  value="professional"
+                  checked={role === "professional"}
+                  onChange={(e) => setRole(e.target.value as "professional")}
+                  className="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500 accent-green-600"
+                />
+                <span className="text-gray-700 group-hover:text-green-600 transition">Professional</span>
+              </label>
+            </div>
+          </div>
 
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input
+              type="password"
+              placeholder="••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-4 py-2 rounded-md bg-white border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+            />
+          </div>
+
+          {/* Confirm Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+            <input
+              type="password"
+              placeholder="••••••"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              className="w-full px-4 py-2 rounded-md bg-white border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+            />
+          </div>
+
+          {/* Error Message */}
           {error && (
-            <p className="text-red-400 text-sm text-center">{error}</p>
+            <div className="bg-red-50 text-red-500 text-sm p-3 rounded-md border border-red-200 text-center">
+              {error}
+            </div>
           )}
 
+          {/* Submit Button */}
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-500 text-black font-bold hover:scale-105 transition"
+            className="w-full"
           >
             {loading ? "Creating Account..." : "Sign Up"}
           </Button>
 
-          <p className="text-center text-sm text-gray-300">
+          {/* Login Link */}
+          <p className="text-center text-sm text-gray-600 mt-4">
             Already have an account?{" "}
-            <Link href="/login" className="text-green-400 hover:underline">
+            <Link href="/login" className="text-green-600 font-semibold hover:underline hover:text-green-700">
               Login
             </Link>
           </p>
         </form>
-      </motion.div>
+      </div>
     </div>
   );
 }

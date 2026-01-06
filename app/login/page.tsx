@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import Button from "../components/Button";
 import Link from "next/link";
-import { useAuth } from "../providers/AuthProvider";
+import { useAuth } from "@/app/providers/AuthProvider";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -17,40 +15,30 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
 
     try {
+      setLoading(true);
       await login(email, password);
     } catch (err: any) {
-      setError(err.message || "Login failed. Please check your credentials.");
+      setError(err.message || "Login failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-900/30 via-black to-black">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="bg-white p-8 rounded shadow w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
 
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl p-8 rounded-2xl w-full max-w-sm text-white"
-      >
-
-        <h1 className="text-3xl font-extrabold mb-6 text-center">
-          Welcome Back
-        </h1>
-
-        <form onSubmit={handleLogin} className="flex flex-col space-y-4">
-
+        <form onSubmit={handleLogin} className="space-y-4">
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="w-full border px-4 py-2 rounded"
             required
-            className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
 
           <input
@@ -58,36 +46,29 @@ export default function LoginPage() {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="w-full border px-4 py-2 rounded"
             required
-            className="px-4 py-2 rounded-md bg-black/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
 
           {error && (
-            <p className="text-red-400 text-sm text-center">{error}</p>
+            <div className="text-red-500 text-sm text-center">{error}</div>
           )}
 
-          <Button
-            type="submit"
+          <button
             disabled={loading}
-            className="w-full bg-green-500 text-black font-bold hover:scale-105 transition"
+            className="w-full bg-green-600 text-white py-2 rounded"
           >
             {loading ? "Logging in..." : "Login"}
-          </Button>
-
-          <p className="text-center text-sm text-gray-300">
-            Don’t have an account?{" "}
-            <Link href="/signup" className="text-green-400 hover:underline">
-              Sign up
-            </Link>
-          </p>
-          <div className="mt-4 p-3 bg-green-900/30 rounded-lg border border-green-500/30">
-            <p className="text-xs text-gray-300 text-center mb-2">Demo Accounts:</p>
-            <p className="text-xs text-gray-400">👤 User: rajesh.kumar@example.com</p>
-            <p className="text-xs text-gray-400">👨‍⚕️ Professional: dr.aman.singh@mealdoctor.com</p>
-            <p className="text-xs text-gray-400 mt-1">Password: password123</p>
-          </div>
+          </button>
         </form>
-      </motion.div>
+
+        <p className="text-center text-sm mt-4">
+          Don’t have an account?{" "}
+          <Link href="/signup" className="text-green-600 underline">
+            Sign up
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
